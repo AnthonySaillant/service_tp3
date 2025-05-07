@@ -32,6 +32,11 @@ class Film extends Model
     {
         return $this->hasMany('App\Models\Critic');
     }
+
+    public function statistic()
+    {
+        return $this->belongsTo('App\Models\Statistic');
+    }
     
     public function actors() 
     {
