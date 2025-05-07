@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             ActorSeeder::class,
             FilmActorSeeder::class,
             RoleSeeder::class,
-            StatisticsSeeder::class,
+            StatisticSeeder::class,
         ]);
 
 

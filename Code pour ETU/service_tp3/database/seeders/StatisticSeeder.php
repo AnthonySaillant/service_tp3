@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class StatisticsSeeder extends Seeder
+class StatisticSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -40,7 +40,7 @@ class StatisticsSeeder extends Seeder
         }
 
         if($totalVotes > 0){
-            return $weightedTotal / $totalVotes;
+            return round($weightedTotal / $totalVotes, 2);
         }
         return 0;
     }
