@@ -7,16 +7,19 @@ type Actor {
     last_name: String!
     first_name: String!
     birthdate: Date!
+    films: [Film!]! @belongsToMany
 }
 
 type Role {
     id: ID!
     name: String!
+    Users: [User!]! @hasMany
 }
 
 type Language {
     id: ID!
     name: String!
+    Films: [Film!]! @hasMany
 }
 
 type User {
@@ -27,6 +30,8 @@ type User {
     last_name: String!
     first_name: String!
     role_id: ID!
+    critics: [Critic!]! @hasMany
+    role: Role! @belongsTo
 }
 
 type Film {
@@ -39,6 +44,10 @@ type Film {
     language_id: ID!
     special_features: String!
     image: String!
+    language: Language! @belongsTo
+    critics: [Critic!]! @hasMany
+    statistic: Statistic! @belongsTo
+    actors: [Actor!]! @belongsToMany
 }
 
 type Critic {
@@ -47,4 +56,14 @@ type Critic {
     film_id: ID!
     score: String!
     comment: String!
+    film: Film! @belongsTo
+    user: User! @belongsTo
+}
+
+type Statistic {
+    id: ID!
+    average_score: Float!
+    nb_votes: Int!
+    film_id: ID!
+    film: Film! @belongsTo
 }
