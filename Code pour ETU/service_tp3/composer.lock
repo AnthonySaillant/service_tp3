@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1f2c7e113f84ddc6b8edc159b623573",
+    "content-hash": "18bc7a114e6b1fca2e4b846a20c030b6",
     "packages": [
         {
             "name": "brick/math",
@@ -2172,16 +2172,16 @@
         },
         {
             "name": "mll-lab/laravel-graphiql",
-            "version": "v3.3.3",
+            "version": "v4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mll-lab/laravel-graphiql.git",
-                "reference": "d1605697fd7a9081d961315386864b9fb2d352f1"
+                "reference": "50135ffb1874e41cd6bb59d6334e8639fe579c72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mll-lab/laravel-graphiql/zipball/d1605697fd7a9081d961315386864b9fb2d352f1",
-                "reference": "d1605697fd7a9081d961315386864b9fb2d352f1",
+                "url": "https://api.github.com/repos/mll-lab/laravel-graphiql/zipball/50135ffb1874e41cd6bb59d6334e8639fe579c72",
+                "reference": "50135ffb1874e41cd6bb59d6334e8639fe579c72",
                 "shasum": ""
             },
             "require": {
@@ -2232,9 +2232,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mll-lab/laravel-graphiql/issues",
-                "source": "https://github.com/mll-lab/laravel-graphiql/tree/v3.3.3"
+                "source": "https://github.com/mll-lab/laravel-graphiql/tree/v4.0.2"
             },
-            "time": "2025-05-06T07:56:13+00:00"
+            "time": "2025-05-12T07:21:46+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2740,16 +2740,16 @@
         },
         {
             "name": "nuwave/lighthouse",
-            "version": "v6.55.0",
+            "version": "v6.56.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nuwave/lighthouse.git",
-                "reference": "c81ca50dc36e98cd602dabf02c9975b3014d1b04"
+                "reference": "5a80dd283b5f19d7f78b18d14d3854811a9864a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nuwave/lighthouse/zipball/c81ca50dc36e98cd602dabf02c9975b3014d1b04",
-                "reference": "c81ca50dc36e98cd602dabf02c9975b3014d1b04",
+                "url": "https://api.github.com/repos/nuwave/lighthouse/zipball/5a80dd283b5f19d7f78b18d14d3854811a9864a4",
+                "reference": "5a80dd283b5f19d7f78b18d14d3854811a9864a4",
                 "shasum": ""
             },
             "require": {
@@ -2867,7 +2867,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-05-06T08:03:40+00:00"
+            "time": "2025-05-16T08:14:50+00:00"
         },
         {
             "name": "phpoption/phpoption",

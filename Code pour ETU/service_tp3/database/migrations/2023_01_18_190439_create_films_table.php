@@ -20,8 +20,7 @@ class CreateFilmsTable extends Migration
             $table->year('release_year');
             $table->integer('length');
             $table->text('description');
-            $table->string('rating', 5);
-            //$table->enum('rating', ['G','PG','PG-13','R','NC-17']);
+            $table->enum('rating', ['G','PG','PG-13','R','NC-17']);
             $table->string('special_features', 200);
             $table->string('image', 40);            
             $table->foreignId('language_id')->constrained();
