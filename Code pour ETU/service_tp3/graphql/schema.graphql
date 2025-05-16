@@ -2,6 +2,8 @@
 scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
 "Account of a person who utilizes this application."
 type User {
     "Unique primary key."
@@ -87,7 +89,7 @@ type Actor {
 }
 
 type Query {
-    film(id: ID! @eq): Film @find
-    films: [Film!]! @all
-    critics: [Critic!]! @all
+    film(id: ID! @eq): Film @find @guard
+
+    me: User @auth
 }
