@@ -19,7 +19,7 @@ final readonly class CreateCriticResolver
                         ->exists();
 
         if ($exists) {
-            throw new AuthorizationException('You have already submitted a critic for this film.');
+            throw new AuthorizationException('Vous avez deja une critique pour ce film.');
         }
 
         $critic = Critic::create([

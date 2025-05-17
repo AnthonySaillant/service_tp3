@@ -48,9 +48,13 @@ query {
       id
       score
       comment
+      film{
+        title
+      }
     }
   }
 }
+
 
 ## Ajout d’une critique de film
 mutation {
@@ -76,15 +80,14 @@ mutation {
 mutation {
   createActor(
     input: {
-      first_name: "Keanu"
-      last_name: "Reeves"
-      birthdate: "1964-09-02"
+      first_name: "Masmis"
+      last_name: "Lacteur"
+      birthdate: "1111-11-11"
       films: {
-        connect: [5, 7]
+        connect: [1]
       }
     }
   ) {
-    id
     first_name
     last_name
     birthdate
@@ -92,5 +95,17 @@ mutation {
       id
       title
     }
+  }
+}
+
+
+mutation UpdateFilmImage {
+  updateFilmImage(input: {
+    id: "1",
+    image: "nouvelle image"
+  }) {
+    id
+    title
+    image
   }
 }

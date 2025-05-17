@@ -1,4 +1,3 @@
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
@@ -7,9 +6,9 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 enum Rating {
     G
     PG
-    PG_13
+    PG_13 #Ne marche pas: PG-13
     R
-    NC_17
+    NC_17 #Ne marche pas: NC-17
 }
 
 type Role {
@@ -124,10 +123,10 @@ type Query {
         )
 
     me: User @auth
-    me: User @auth
 
     allStatistics: [Statistic!]! @all
     allActors: [Actor!]! @all
+    allfilms: [Film!]! @all
 }
 
 type Mutation {
@@ -137,6 +136,9 @@ type Mutation {
     createActor(input: CreateActorInput! @spread): Actor!
         @field(resolver: "App\\GraphQL\\Queries\\CreateActorResolver")
         @guard
+
+    updateFilmImage(input: UpdateFilmImageInput! @spread): Film!
+        @field(resolver: "App\\GraphQL\\Queries\\UpdateFilmImageResolver")
 }
 
 input CreateCriticInput {
@@ -157,7 +159,7 @@ input CreateFilmBelongsToMany {
 }
 
 input UpdateFilmImageInput {
-    film_id: ID!
+    id: ID!
     image: String!
 }
 
