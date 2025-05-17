@@ -35,7 +35,7 @@ class Film extends Model
 
     public function statistic()
     {
-        return $this->belongsTo('App\Models\Statistic');
+        return $this->hasOne('App\Models\Statistic');
     }
     
     public function actors() 

@@ -4,8 +4,6 @@ scalar DateTime
 
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-"Account of a person who utilizes this application."
-
 enum Rating {
     G
     PG
@@ -50,7 +48,7 @@ type Film {
     image: String!
     language: Language! @belongsTo
     critics: [Critic!]! @hasMany
-    statistic: Statistic! @belongsTo
+    statistic: Statistic! @hasOne
     actors: [Actor!]! @belongsToMany
 }
 
@@ -58,7 +56,7 @@ type Critic {
     id: ID!
     user_id: ID!
     film_id: ID!
-    score: String!
+    score: Float!
     comment: String!
     film: Film! @belongsTo
     user: User! @belongsTo
@@ -81,24 +79,88 @@ type Actor {
 }
 
 type Query {
-  film(id: ID! @eq): Film @find @guard
+    film(id: ID! @eq): Film @find @guard
 
-  searchFilmTitleAndDescription(keyword: String,page: Int = 1, first: Int = 10): [Film!]! 
-    @paginate 
-    @whereConditions(columns: ["title", "description"], operator: "like", value: "%{{ keyword }}%")
+    searchFilmTitleAndDescription(
+        keyword: String
+        page: Int = 1
+        first: Int = 10
+    ): [Film!]!
+        @paginate
+        @whereConditions(
+            columns: ["title", "description"]
+            operator: "like"
+            value: "%{{ keyword }}%"
+        )
 
-  searchFilmAfterMinYear(minYear: Int,page: Int = 1, first: Int = 10): [Film!]! 
-    @paginate 
-    @whereConditions(columns: ["release_year"], operator: ">=", value: "{{ minYear }}")
+    searchFilmAfterMinYear(
+        minYear: Int
+        page: Int = 1
+        first: Int = 10
+    ): [Film!]!
+        @paginate
+        @whereConditions(
+            columns: ["release_year"]
+            operator: ">="
+            value: "{{ minYear }}"
+        )
 
-  searchFilmBetweenFirstAndSecondYear(firstYear: Int, secondYear: Int, page: Int = 1, first: Int = 10): [Film!]! 
-    @paginate 
-    @whereConditions(columns: ["release_year"], operator: ">=", value: "{{ firstYear }}")
-    @whereConditions(columns: ["release_year"], operator: "<=", value: "{{ secondYear }}")
+    searchFilmBetweenFirstAndSecondYear(
+        firstYear: Int
+        secondYear: Int
+        page: Int = 1
+        first: Int = 10
+    ): [Film!]!
+        @paginate
+        @whereConditions(
+            columns: ["release_year"]
+            operator: ">="
+            value: "{{ firstYear }}"
+        )
+        @whereConditions(
+            columns: ["release_year"]
+            operator: "<="
+            value: "{{ secondYear }}"
+        )
 
-  me: User @auth
+    me: User @auth
+    me: User @auth
+
+    allStatistics: [Statistic!]! @all
+    allActors: [Actor!]! @all
+}
+
+type Mutation {
+    createCritic(input: CreateCriticInput!): Critic
+        @field(resolver: "App\\GraphQL\\Queries\\CreateCriticResolver")
+
+    createActor(input: CreateActorInput! @spread): Actor!
+        @field(resolver: "App\\GraphQL\\Queries\\CreateActorResolver")
+        @guard
+}
+
+input CreateCriticInput {
+    film_id: ID!
+    score: Float!
+    comment: String!
+}
+
+input CreateActorInput {
+    last_name: String!
+    first_name: String!
+    birthdate: Date!
+    films: CreateFilmBelongsToMany
+}
+
+input CreateFilmBelongsToMany {
+    connect: [ID]
+}
+
+input UpdateFilmImageInput {
+    film_id: ID!
+    image: String!
 }
 
 type PaginatorInfo {
-  currentPage: Int!
+    currentPage: Int!
 }

@@ -1,8 +1,26 @@
 ## Consulter un film en particulier
-
+query {
+  film(id: 1) {
+    title
+    critics {
+      id
+      score
+      comment
+    }
+  }
+}
 
 ## Consultation de tous les acteurs d’un certain film
-
+query {
+  film(id: 1) {
+    title
+    actors {
+      last_name
+      first_name
+      birthdate
+    }
+  }
+}
 
 ## Recherche de films - Cas 1 : Sans critère avec pagination (demandez la page 1)
 
@@ -14,12 +32,65 @@
 
 
 ## Consulter les informations de l’utilisateur authentifié
-
+{
+    me {
+        id
+        email
+        first_name
+        last_name
+    }
+}
 
 ## Consulter les critiques de l’utilisateur authentifié
-
+query {
+  me {
+    critics {
+      id
+      score
+      comment
+    }
+  }
+}
 
 ## Ajout d’une critique de film
-
+mutation {
+  createCritic(input: {
+    film_id: 2,
+    score: 100,
+    comment: "Ouah le film de dinguos!!!"
+  }) {
+    id
+    score
+    comment
+    film {
+      title
+      statistic {
+        average_score
+        nb_votes
+      }
+    }
+  }
+}
 
 ## Ajout d’un acteur (lier l'acteur au film 1, mettre à jour l'image du film 2)
+mutation {
+  createActor(
+    input: {
+      first_name: "Keanu"
+      last_name: "Reeves"
+      birthdate: "1964-09-02"
+      films: {
+        connect: [5, 7]
+      }
+    }
+  ) {
+    id
+    first_name
+    last_name
+    birthdate
+    films {
+      id
+      title
+    }
+  }
+}
