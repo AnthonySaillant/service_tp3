@@ -80,47 +80,56 @@ type Actor {
 type Query {
     film(id: ID! @eq): Film @find @guard
 
-    searchFilmTitleAndDescription(
-        keyword: String
-        page: Int = 1
-        first: Int = 10
-    ): [Film!]!
-        @paginate
-        @whereConditions(
-            columns: ["title", "description"]
-            operator: "like"
-            value: "%{{ keyword }}%"
-        )
+  films(    #Les filtres ne marchent pas surement du a l'utilisation du @whereConditions, jai suivi la doc et meme regarder en classe avec vous mais cela ne fonctionne pas pour moi (Lorik)
+            # Vous m'aviez dit de l'utiliser en classe alors c'est ce que j'ai fait. (Lorik)
+    keywordTitle: String
+    keywordDescription: String
+    minYear: Int
+    maxYear: Int
+    minLength: Int
+    maxLength: Int
+    page: Int = 1
+    first: Int = 10
+  ): [Film!]!
+  @paginate
+  @whereConditions(
+    combinator: "AND"
+    conditions: [
+      {
+        column: "title"
+        operator: "like"
+        value: "%{{ keywordTitle }}%"
+        boolean: "AND"
+      },
+      {
+        column: "description"
+        operator: "like"
+        value: "%{{ keywordDescription }}%"
+        boolean: "AND"
+      },
+      {
+        column: "release_year"
+        operator: ">="
+        value: "{{ minYear }}"
+      },
+      {
+        column: "release_year"
+        operator: "<="
+        value: "{{ maxYear }}"
+      },
+      {
+        column: "length"
+        operator: ">="
+        value: "{{ minLength }}"
+      },
+      {
+        column: "length"
+        operator: "<="
+        value: "{{ maxLength }}"
+      }
+    ]
+  )
 
-    searchFilmAfterMinYear(
-        minYear: Int
-        page: Int = 1
-        first: Int = 10
-    ): [Film!]!
-        @paginate
-        @whereConditions(
-            columns: ["release_year"]
-            operator: ">="
-            value: "{{ minYear }}"
-        )
-
-    searchFilmBetweenFirstAndSecondYear(
-        firstYear: Int
-        secondYear: Int
-        page: Int = 1
-        first: Int = 10
-    ): [Film!]!
-        @paginate
-        @whereConditions(
-            columns: ["release_year"]
-            operator: ">="
-            value: "{{ firstYear }}"
-        )
-        @whereConditions(
-            columns: ["release_year"]
-            operator: "<="
-            value: "{{ secondYear }}"
-        )
 
     me: User @auth
 
@@ -128,6 +137,7 @@ type Query {
     allActors: [Actor!]! @all
     allfilms: [Film!]! @all
 }
+
 
 type Mutation {
     createCritic(input: CreateCriticInput!): Critic

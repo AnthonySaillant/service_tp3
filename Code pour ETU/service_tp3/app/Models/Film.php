@@ -42,4 +42,21 @@ class Film extends Model
     {
         return $this->belongsToMany('App\Models\Actor');
     }
+    
+
+    /*
+        chat GPT pour getRatingAttribute et setRatingAttribute pas le choix de converir le - en _ car lighthouse a un probleme avec les _ 
+    */
+
+    // Accessor : pour transformer - en _ à la lecture
+    public function getRatingAttribute($value)
+    {
+        return str_replace('-', '_', $value);
+    }
+
+    // Mutator : pour transformer _ en - à l’écriture
+    public function setRatingAttribute($value)
+    {
+        $this->attributes['rating'] = str_replace('_', '-', $value);
+    }
 }
