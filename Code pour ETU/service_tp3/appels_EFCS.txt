@@ -24,61 +24,67 @@ query {
 
 ## Recherche de films - Cas 1 : Sans critère avec pagination (demandez la page 1)
 query {
-  films(page: 1, first: 10) {
+  searchFilms(
+    page: 1
+  ) {
     paginatorInfo {
       currentPage
+      lastPage
+      hasMorePages
     }
     data {
       id
       title
+      description
       release_year
       length
-      description
     }
   }
 }
 
 ## Recherche de films - Cas 2 : Avec le mot-clé "AL" (sur titre ou descritpion) avec pagination (demandez la page 1)
 query {
-  films(
-    page: 10
-    first: 10
-    keywordTitle: "AL"
-    keywordDescription: "AL"
+  searchFilms(
+    title: "%AL%"
+    description: "%AL%"
+    page: 1
   ) {
     paginatorInfo {
       currentPage
+      lastPage
+      hasMorePages
     }
     data {
       id
       title
+      description
       release_year
       length
-      description
     }
   }
 }
 
 ## Recherche de films - Cas 3 : Avec le mot-clé "AL" (sur titre ou descritpion), minimum année 2006, entre 120 et 150 minutes avec pagination (demandez la page 1)
 query {
-  films(
+  searchFilms(
+    title: "%AL%"
+    description: "%AL%"
+    minReleaseYear: 2006
+    minDuration: 120
+    maxDuration: 150
     page: 1
-    first: 10
-    keywordTitle: "AL"
-    keywordDescription: "AL"
-    minYear: 2006
-    minLength: 120
-    maxLength: 150
   ) {
     paginatorInfo {
       currentPage
+      lastPage
+      hasMorePages
     }
     data {
       id
       title
+      description
       release_year
       length
-      description
     }
   }
 }

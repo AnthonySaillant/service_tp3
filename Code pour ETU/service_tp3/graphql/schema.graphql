@@ -1,3 +1,6 @@
+###############################
+#Voir le bas du document pour nos essaies du whereCondition
+###############################
 scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
@@ -80,68 +83,21 @@ type Actor {
 type Query {
     film(id: ID! @eq): Film @find @guard
 
-  films(    #Les filtres ne marchent pas surement du a l'utilisation du @whereConditions, jai suivi la doc et meme regarder en classe avec vous mais cela ne fonctionne pas pour moi (Lorik)
-            # Vous m'aviez dit de l'utiliser en classe alors c'est ce que j'ai fait. (Lorik)
-    keywordTitle: String
-    keywordDescription: String
-    minYear: Int
-    maxYear: Int
-    minLength: Int
-    maxLength: Int
-    page: Int = 1
-    first: Int = 10
-  ): [Film!]!
-  @paginate
-  @whereConditions(
-    combinator: "AND"
-    conditions: [
-      {
-        column: "title"
-        operator: "like"
-        value: "%{{ keywordTitle }}%"
-        boolean: "AND"
-      },
-      {
-        column: "description"
-        operator: "like"
-        value: "%{{ keywordDescription }}%"
-        boolean: "AND"
-      },
-      {
-        column: "release_year"
-        operator: ">="
-        value: "{{ minYear }}"
-      },
-      {
-        column: "release_year"
-        operator: "<="
-        value: "{{ maxYear }}"
-      },
-      {
-        column: "length"
-        operator: ">="
-        value: "{{ minLength }}"
-      },
-      {
-        column: "length"
-        operator: "<="
-        value: "{{ maxLength }}"
-      }
-    ]
-  )
-
-
     me: User @auth
 
-    allStatistics: [Statistic!]! @all
-    allActors: [Actor!]! @all
-    allfilms: [Film!]! @all
+    searchFilms(
+        title: String @where(key: "title", operator: "like")
+        description: String @where(key: "description", operator: "like")
+        minReleaseYear: Int @where(key: "release_year", operator: ">=")
+        minDuration: Int @where(key: "length", operator: ">=")
+        maxDuration: Int @where(key: "length", operator: "<=")
+    ): [Film!]! @paginate(defaultCount: 10)
 }
-
 
 type Mutation {
     createCritic(input: CreateCriticInput!): Critic
         @field(resolver: "App\\GraphQL\\Queries\\CreateCriticResolver")
+        @guard
 
     createActor(input: CreateActorInput! @spread): Actor!
         @field(resolver: "App\\GraphQL\\Queries\\CreateActorResolver")
@@ -149,6 +105,7 @@ type Mutation {
 
     updateFilmImage(input: UpdateFilmImageInput! @spread): Film!
         @field(resolver: "App\\GraphQL\\Queries\\UpdateFilmImageResolver")
+        @guard
 }
 
 input CreateCriticInput {
@@ -173,6 +130,83 @@ input UpdateFilmImageInput {
     image: String!
 }
 
-type PaginatorInfo {
-    currentPage: Int!
-}
+###ESSAIES POUR FAIRE LE OR###
+
+##############################
+
+##Avec whereConditions (Anthony Saillant)##
+#Erreur: ne trouve pas la colonne title
+
+#input FilmWhereConditions
+#@whereConditions(
+#    columns: ["title", "description", "release_year", "length"]
+#    handler: "Nuwave\\Lighthouse\\WhereConditions\\WhereConditionsHandler"
+#) {
+#AND: [FilmWhereConditions]
+#OR: [FilmWhereConditions]
+
+#title: String @where(operator: "like")
+#description: String @where(operator: "like")
+#release_year: Int @where(operator: ">=")
+#length: Float @where(operator: ">=")
+#length_lte: Float @where(key: "length", operator: "<=")
+#}
+
+#films(where: FilmWhereConditions @whereConditions): [Film!]!
+#@paginate(defaultCount: 10)
+
+##############################
+
+#Avec whereConditions (Lorik Parent)##
+#Les filtres ne marchent pas surement du a l'utilisation du @whereConditions,
+#jai suivi la doc et meme regarder en classe avec vous mais cela ne fonctionne pas pour moi (Lorik)
+#Vous m'aviez dit de l'utiliser en classe alors c'est ce que j'ai fait. (Lorik)
+
+# films(
+#   keywordTitle: String
+#   keywordDescription: String
+#   minYear: Int
+#   maxYear: Int
+#   minLength: Int
+#   maxLength: Int
+#   page: Int = 1
+#   first: Int = 10
+# ): [Film!]!
+# @paginate
+# @whereConditions(
+#   combinator: "AND"
+#   conditions: [
+#     {
+#       column: "title"
+#       operator: "like"
+#       value: "%{{ keywordTitle }}%"
+#       boolean: "AND"
+#     },
+#     {
+#       column: "description"
+#       operator: "like"
+#       value: "%{{ keywordDescription }}%"
+#       boolean: "AND"
+#     },
+#     {
+#       column: "release_year"
+#       operator: ">="
+#       value: "{{ minYear }}"
+#     },
+#     {
+#       column: "release_year"
+#       operator: "<="
+#       value: "{{ maxYear }}"
+#     },
+#     {
+#       column: "length"
+#       operator: ">="
+#       value: "{{ minLength }}"
+#     },
+#     {
+#       column: "length"
+#       operator: "<="
+#       value: "{{ maxLength }}"
+#     }
+#   ]
+# )
